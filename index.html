@@ -365,6 +365,326 @@
   .m-foot { padding: 12px 26px 24px; flex: none; }
   .m-foot .btn { width: 100%; justify-content: center; }
 
+  /* ---------- NAV ADDITIONS ---------- */
+  .nav-resume-btn {
+    display: inline-flex !important; align-items: center; gap: 5px;
+    border: 1px solid var(--line); background: color-mix(in srgb, var(--peri) 12%, transparent);
+    color: var(--ink) !important; font-weight: 700 !important;
+    transition: all .25s ease !important;
+  }
+  .nav-resume-btn:hover {
+    background: color-mix(in srgb, var(--peri) 24%, transparent);
+    border-color: var(--peri); transform: translateY(-1px);
+  }
+  .nav-ext-ico { width: 12px; height: 12px; opacity: 0.75; transition: transform .2s; }
+  .nav-resume-btn:hover .nav-ext-ico { transform: translate(2px, -2px); opacity: 1; }
+
+  .nav-dash-btn {
+    display: inline-flex; align-items: center; gap: 7px; padding: 7px 15px; border-radius: 999px;
+    font-size: 0.85rem; font-weight: 700; font-family: inherit; cursor: pointer; white-space: nowrap;
+    color: var(--btn-ink); background: linear-gradient(135deg, var(--btn-a), var(--btn-b));
+    border: 1px solid transparent; box-shadow: 0 4px 14px -3px color-mix(in srgb, var(--btn-a) 60%, transparent);
+    transition: transform .2s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  .nav-dash-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px -2px color-mix(in srgb, var(--btn-a) 80%, transparent); filter: brightness(1.08); }
+  .dash-glow-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #fff;
+    box-shadow: 0 0 8px #fff; animation: pulseDot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulseDot { 0%, 100% { transform: scale(0.9); opacity: 0.85; } 50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 12px #fff; } }
+
+  /* ---------- INTERACTIVE DASHBOARD (ZERO SCROLL) ---------- */
+  .dash-overlay {
+    position: fixed; inset: 0; z-index: 600;
+    background: var(--bg); display: none; flex-direction: column;
+    height: 100vh; height: 100svh; width: 100vw;
+    overflow: hidden;
+    backdrop-filter: blur(28px) saturate(1.4); -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    transition: opacity .3s ease;
+  }
+  .dash-overlay.open { display: flex; animation: dashFadeIn .35s cubic-bezier(.16, 1, .3, 1) both; }
+  @keyframes dashFadeIn { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: scale(1); } }
+
+  /* Dashboard background ambient fx */
+  .dash-bg-fx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+  .dash-blob { position: absolute; border-radius: 50%; filter: blur(85px); opacity: calc(var(--blob) * 1.15); animation: drift 20s ease-in-out infinite alternate; }
+  .db1 { width: 440px; height: 440px; background: var(--pink); top: -80px; left: -80px; }
+  .db2 { width: 400px; height: 400px; background: var(--mint); bottom: -60px; right: -60px; animation-delay: -7s; }
+  .db3 { width: 360px; height: 360px; background: var(--peri); top: 38%; left: 45%; animation-delay: -12s; }
+  .dash-grid-fx {
+    position: absolute; inset: 0; opacity: 0.45;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* Top Control Bar */
+  .dash-topbar {
+    position: relative; z-index: 2;
+    flex: 0 0 52px; height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 clamp(12px, 3vw, 24px);
+    background: var(--nav-bg); border-bottom: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  }
+  .dash-brand-wrap { display: flex; align-items: center; gap: 10px; }
+  .dash-status-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: #10b981;
+    box-shadow: 0 0 0 4px color-mix(in srgb, #10b981 30%, transparent), 0 0 10px #10b981;
+    animation: livePulse 2s ease-in-out infinite;
+  }
+  @keyframes livePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); box-shadow: 0 0 0 6px color-mix(in srgb, #10b981 40%, transparent), 0 0 14px #10b981; } }
+  .dash-brand-titles { display: flex; flex-direction: column; line-height: 1.1; }
+  .dash-kicker { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; }
+  .dash-brand-name { font-size: 1rem; font-weight: 800; margin: 0; white-space: nowrap; }
+
+  /* Tabs inside top bar */
+  .dash-tabs { display: flex; align-items: center; gap: 4px; background: color-mix(in srgb, var(--ink) 6%, transparent); padding: 3px; border-radius: 999px; border: 1px solid var(--line); }
+  .dash-tab {
+    display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px;
+    border: none; background: transparent; color: var(--ink-2); font-family: inherit; font-size: 0.78rem;
+    font-weight: 700; cursor: pointer; transition: all .2s ease;
+  }
+  .dash-tab svg { width: 14px; height: 14px; }
+  .dash-tab:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, transparent); }
+  .dash-tab.active { background: var(--ink); color: var(--bg); box-shadow: var(--shadow); }
+
+  .dash-actions { display: flex; align-items: center; gap: 8px; }
+  .dash-btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 700; text-decoration: none; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink); transition: all .2s;
+  }
+  .dash-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .dash-icon-btn {
+    width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink); cursor: pointer; display: grid; place-items: center;
+    font-size: 1.25rem; transition: all .25s ease;
+  }
+  .dash-icon-btn:hover { transform: scale(1.08); border-color: var(--accent); color: var(--accent); }
+  .dash-close-btn:hover { transform: rotate(90deg) scale(1.08); background: color-mix(in srgb, var(--pink) 15%, transparent); border-color: var(--pink); color: var(--pink); }
+
+  /* Main Viewport Container (Zero Scroll) */
+  .dash-viewport {
+    position: relative; z-index: 1; flex: 1 1 auto;
+    height: calc(100svh - 52px); max-height: calc(100svh - 52px);
+    padding: 10px 14px 12px; overflow: hidden; box-sizing: border-box;
+  }
+  .dash-grid {
+    display: grid; grid-template-columns: 2.7fr 4.3fr 5fr; gap: 10px;
+    height: 100%; max-height: 100%; box-sizing: border-box;
+  }
+
+  /* Universal Dashboard Card */
+  .dash-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+    box-shadow: var(--shadow); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    overflow: hidden; position: relative; box-sizing: border-box;
+  }
+  .dash-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; border-bottom: 1px solid var(--line); flex: none;
+  }
+  .dash-card-title { display: flex; align-items: center; gap: 8px; }
+  .dash-card-title h4 { font-size: 0.85rem; font-weight: 800; margin: 0; color: var(--ink); letter-spacing: -0.01em; }
+  .dash-card-icon {
+    width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center;
+    color: var(--c, var(--accent)); background: color-mix(in srgb, var(--c, var(--accent)) 16%, transparent);
+  }
+  .dash-card-icon svg { width: 14px; height: 14px; }
+  .dash-chip-sm {
+    font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;
+    background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent);
+    color: var(--c, var(--accent)); border: 1px solid color-mix(in srgb, var(--c, var(--accent)) 25%, transparent);
+    white-space: nowrap;
+  }
+
+  /* COLUMN 1: Profile Card */
+  .dash-profile-card {
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 12px 14px 10px; height: 100%;
+  }
+  .dash-avatar-wrapper {
+    position: relative; width: 106px; height: 106px; margin: 0 auto; flex: none;
+  }
+  .dash-avatar-ring {
+    width: 100%; height: 100%; border-radius: 50%; padding: 4px; position: relative; overflow: hidden;
+    box-shadow: 0 8px 24px -6px color-mix(in srgb, var(--pink) 50%, transparent);
+  }
+  .dash-avatar-ring::before {
+    content: ""; position: absolute; inset: -50%;
+    background: conic-gradient(from 0deg, var(--pink), var(--amber), var(--mint), var(--peri), var(--pink));
+    animation: spin 7s linear infinite;
+  }
+  .dash-avatar-inner {
+    position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%;
+    overflow: hidden; background: #fff;
+  }
+  .dash-avatar-inner img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .dash-badge-orbit { position: absolute; z-index: 3; }
+  .dash-badge-orbit.o-left { top: 6px; left: -22px; }
+  .dash-badge-orbit.o-right { bottom: 6px; right: -22px; }
+  .orbit-pill {
+    display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 0.68rem; font-weight: 800;
+    background: var(--card-solid); border: 1px solid var(--line); color: var(--ink);
+    box-shadow: var(--shadow); white-space: nowrap;
+  }
+
+  .dash-profile-meta { text-align: center; margin-top: 4px; flex: none; }
+  .dash-name { font-size: 1.15rem; font-weight: 800; margin: 0 0 2px; }
+  .dash-role-tag { font-size: 0.74rem; font-weight: 700; color: var(--accent); }
+  .dash-bio { font-size: 0.76rem; color: var(--ink-2); line-height: 1.35; margin: 4px auto 0; max-width: 32ch; }
+
+  /* 4 KPI tiles */
+  .dash-kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin: 6px 0; flex: none; }
+  .dash-kpi-tile {
+    padding: 7px 8px; border-radius: 12px; text-align: center;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 25%, transparent);
+    transition: transform .2s ease;
+  }
+  .dash-kpi-tile:hover { transform: translateY(-2px); }
+  .kpi-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.3rem; font-weight: 800; line-height: 1; color: var(--ink); }
+  .kpi-num .plus { color: var(--c); }
+  .kpi-label { font-size: 0.66rem; font-weight: 700; color: var(--ink-2); margin-top: 2px; }
+
+  .dash-traits { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin: 2px 0; flex: none; }
+  .trait-chip { font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 6%, transparent); border: 1px solid var(--line); color: var(--ink-2); }
+
+  .dash-contact-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; flex: none; }
+  .dash-icon-link {
+    width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--card-solid); border: 1px solid var(--line); color: var(--ink-2);
+    text-decoration: none; transition: all .2s; flex: none;
+  }
+  .dash-icon-link:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+  .dash-icon-link svg { width: 14px; height: 14px; }
+  .dash-resume-cta {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 6px 10px; border-radius: 999px; font-size: 0.74rem; font-weight: 800; text-decoration: none;
+    color: var(--btn-ink); background: linear-gradient(120deg, var(--btn-a), var(--btn-b));
+    box-shadow: 0 4px 12px -3px color-mix(in srgb, var(--btn-a) 60%, transparent);
+    transition: transform .2s ease; white-space: nowrap;
+  }
+  .dash-resume-cta:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .dash-resume-cta svg { width: 12px; height: 12px; }
+
+  /* COLUMN 2 & 3 Stacks */
+  .dash-col-stack { display: grid; grid-template-rows: 1.15fr 1fr; gap: 10px; height: 100%; box-sizing: border-box; }
+  .dash-pane-card { display: flex; flex-direction: column; justify-content: space-between; padding: 8px 12px 10px; height: 100%; }
+
+  /* Academic Visuals */
+  .dash-academic-visual { display: flex; align-items: center; gap: 14px; margin: 4px 0; flex: 1; }
+  .dash-radial-box { position: relative; width: 84px; height: 84px; flex: none; }
+  .dash-radial-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .dash-radial-track { fill: none; stroke: var(--line); stroke-width: 8; }
+  .dash-radial-bar {
+    fill: none; stroke: url(#sparkGrad); stroke-width: 8; stroke-linecap: round;
+    transition: stroke-dashoffset 1.4s cubic-bezier(.2,.8,.3,1);
+  }
+  .dash-radial-content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .dash-radial-score { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.25rem; font-weight: 800; line-height: 1; color: var(--ink); }
+  .dash-radial-unit { font-size: 0.62rem; font-weight: 800; color: var(--accent); }
+  .dash-radial-sub { font-size: 0.58rem; color: var(--ink-3); font-weight: 600; }
+
+  .dash-edu-bars { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .dash-edu-item { display: flex; flex-direction: column; gap: 2px; }
+  .dash-edu-info { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; }
+  .dash-edu-level { color: var(--ink); }
+  .dash-edu-school { font-size: 0.66rem; color: var(--ink-3); font-weight: 500; }
+  .dash-edu-bar-track { height: 10px; background: color-mix(in srgb, var(--ink) 8%, transparent); border-radius: 999px; overflow: hidden; position: relative; }
+  .dash-edu-bar-fill {
+    height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--c), color-mix(in srgb, var(--c) 70%, #fff));
+    transition: width 1.2s cubic-bezier(.2,.8,.3,1); position: relative;
+  }
+  .dash-overlay.open .dash-edu-bar-fill { width: var(--w); }
+  .bar-tag { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 0.58rem; font-weight: 800; color: #fff; line-height: 1; }
+
+  /* Sparkline Graph */
+  .dash-sparkline-wrap { margin-top: 4px; padding-top: 4px; border-top: 1px dashed var(--line); flex: none; }
+  .spark-label { font-size: 0.66rem; font-weight: 700; color: var(--ink-3); margin-bottom: 2px; }
+  .dash-sparkline-svg { width: 100%; height: 32px; overflow: visible; }
+  .dash-sparkline-svg .spark-line { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.6s ease; }
+  .dash-overlay.open .dash-sparkline-svg .spark-line { stroke-dashoffset: 0; }
+  .spark-nodes { display: flex; justify-content: space-between; font-size: 0.64rem; font-weight: 700; color: var(--ink-2); margin-top: 2px; }
+
+  /* Skill Meters */
+  .dash-skills-grid { display: flex; flex-direction: column; gap: 5px; margin: 4px 0; flex: 1; justify-content: center; }
+  .skill-meter-row { display: flex; flex-direction: column; gap: 2px; }
+  .sm-meta { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; color: var(--ink); }
+  .sm-pct { color: var(--c, var(--accent)); font-weight: 800; }
+  .sm-track { height: 7px; background: color-mix(in srgb, var(--ink) 8%, transparent); border-radius: 999px; overflow: hidden; }
+  .sm-fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--g1), var(--g2)); transition: width 1.3s cubic-bezier(.2,.8,.3,1); }
+  .dash-overlay.open .sm-fill { width: var(--p); }
+
+  .dash-tool-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; flex: none; }
+  .t-pill { font-size: 0.66rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: color-mix(in srgb, var(--mint) 12%, transparent); border: 1px solid color-mix(in srgb, var(--mint) 25%, transparent); color: var(--ink); }
+
+  /* COLUMN 3: Projects & Certs */
+  .dash-projects-display { display: flex; flex-direction: column; gap: 7px; margin: 4px 0; flex: 1; justify-content: center; }
+  .dash-proj-node {
+    display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 14px;
+    background: color-mix(in srgb, var(--ink) 4%, transparent); border: 1px solid var(--line);
+    transition: transform .2s ease, border-color .2s; position: relative;
+  }
+  .dash-proj-node:hover { transform: translateX(3px); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  .dpn-art { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; color: #fff; flex: none; }
+  .dpn-art svg { width: 20px; height: 20px; }
+  .dpn-details { flex: 1; min-width: 0; }
+  .dpn-head { display: flex; align-items: center; gap: 6px; line-height: 1; margin-bottom: 2px; }
+  .dpn-badge { font-size: 0.62rem; font-weight: 800; color: var(--accent); }
+  .dpn-status.live { font-size: 0.62rem; font-weight: 800; color: #10b981; }
+  .dpn-details h5 { font-size: 0.84rem; font-weight: 800; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dpn-details p { font-size: 0.68rem; color: var(--ink-2); line-height: 1.25; margin: 2px 0 3px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .dpn-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+  .dpn-tags span { font-size: 0.58rem; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink-2); }
+  .dpn-launch {
+    width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; text-decoration: none; flex: none; transition: transform .25s ease;
+  }
+  .dpn-launch svg { width: 13px; height: 13px; }
+  .dash-proj-node:hover .dpn-launch { transform: rotate(-45deg) scale(1.1); background: var(--accent); color: #fff; }
+
+  /* Certifications & Internship Wall */
+  .dash-intern-pill {
+    font-size: 0.68rem; font-weight: 800; padding: 2px 9px; border-radius: 999px;
+    background: color-mix(in srgb, var(--peri) 15%, transparent); color: var(--peri);
+    border: 1px solid color-mix(in srgb, var(--peri) 30%, transparent); white-space: nowrap;
+  }
+  .dash-cert-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 4px 0 0; flex: 1;
+    align-content: center;
+  }
+  .dash-cert-chip {
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 6px 8px; border-radius: 10px; text-decoration: none; color: inherit;
+    background: color-mix(in srgb, var(--c) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 22%, transparent);
+    transition: transform .2s ease, border-color .2s; min-height: 48px; position: relative;
+  }
+  .dash-cert-chip:hover { transform: translateY(-2px); border-color: var(--c); background: color-mix(in srgb, var(--c) 18%, transparent); }
+  .dcc-iss { font-size: 0.58rem; font-weight: 800; color: var(--c); text-transform: uppercase; }
+  .dcc-title { font-size: 0.68rem; font-weight: 700; line-height: 1.15; color: var(--ink); margin: 2px 0; }
+  .dcc-arrow { position: absolute; right: 5px; bottom: 5px; width: 10px; height: 10px; color: var(--c); opacity: 0.7; }
+  .dash-cert-chip:hover .dcc-arrow { transform: rotate(-45deg); opacity: 1; }
+
+  /* Responsive Rules for Small Screens / Mobile */
+  @media (max-width: 980px) {
+    .dash-grid { grid-template-columns: 1fr; }
+    .dash-grid[data-active-pane="all"] .dash-col-stack:nth-child(3) { display: none; }
+    .dash-grid[data-active-pane="profile"] > :not([data-pane="profile"]) { display: none; }
+    .dash-grid[data-active-pane="academics"] > :not([data-pane="academics"]) { display: none; }
+    .dash-grid[data-active-pane="projects"] > :not([data-pane="projects"]) { display: none; }
+    .dash-cert-grid { grid-template-columns: repeat(2, 1fr); }
+    .dash-tabs span { display: none; }
+  }
+  @media (max-width: 640px) {
+    .dash-kicker { display: none; }
+    .dash-brand-name { font-size: 0.88rem; }
+    .dash-resume-btn span { display: none; }
+    .dash-tabs { padding: 2px; }
+    .dash-tab { padding: 5px 8px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
@@ -392,6 +712,10 @@
     <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M8 15h3"/></g></symbol>
     <symbol id="i-brief" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></g></symbol>
     <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dash" viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm10 0h6v7h-6V4zM4 14h7v6H4v-6zm10 0h6v6h-6v-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15.4 12.8L18 22l-6-3-6 3 2.6-9.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-school" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5zM6 12v5c3 3 9 3 12 0v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   </defs>
 </svg>
 
@@ -411,6 +735,8 @@
     <li><a href="#education" data-nav="education">Education</a></li>
     <li><a href="#certs" data-nav="certs">Certificates</a></li>
     <li><a href="#connect" data-nav="connect">Connect</a></li>
+    <li><a href="https://1drv.ms/w/c/cfd9a88d4bc2a72f/IQB6CmicZcqRToPzLjpv2RcGAXVQxzTYkP0Twmp7Nsn37-M?e=9E5N34" target="_blank" rel="noopener" class="nav-resume-btn" title="View Interview Resume on OneDrive">Resume <svg class="nav-ext-ico" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+    <li><button type="button" id="openDashBtn" class="nav-dash-btn" aria-label="Open Interactive Dashboard"><span class="dash-glow-dot"></span>Dashboard</button></li>
   </ul>
   <button class="theme-btn" id="themeBtn" aria-label="Toggle light and dark theme">
     <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -663,6 +989,345 @@
   </div>
 </div>
 
+<!-- ========================================================
+     INTERACTIVE PICTORIAL ANIMATED DASHBOARD (ZERO SCROLL)
+     ======================================================== -->
+<div class="dash-overlay" id="dashOverlay" role="dialog" aria-modal="true" aria-label="Priyanshi Mandloi Interactive Dashboard">
+  <!-- ambient background fx matching portfolio theme -->
+  <div class="dash-bg-fx" aria-hidden="true">
+    <div class="dash-blob db1"></div>
+    <div class="dash-blob db2"></div>
+    <div class="dash-blob db3"></div>
+    <div class="dash-grid-fx"></div>
+  </div>
+
+  <!-- Top Navigation & Control Bar -->
+  <header class="dash-topbar">
+    <div class="dash-brand-wrap">
+      <div class="dash-status-dot" title="System Operational • Open to Work"></div>
+      <div class="dash-brand-titles">
+        <span class="dash-kicker">Interactive HUD // Live Dashboard</span>
+        <h2 class="dash-brand-name">Priyanshi <span class="serif grad-text">Mandloi</span></h2>
+      </div>
+    </div>
+
+    <!-- View Mode Filter / Tabs -->
+    <div class="dash-tabs" role="tablist" aria-label="Dashboard views">
+      <button class="dash-tab active" data-dash-tab="all" role="tab" aria-selected="true"><svg class="i" viewBox="0 0 24 24"><use href="#i-dash"/></svg><span>All Systems</span></button>
+      <button class="dash-tab" data-dash-tab="profile" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24"><use href="#i-flag"/></svg><span>Persona</span></button>
+      <button class="dash-tab" data-dash-tab="academics" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24"><use href="#i-school"/></svg><span>Academics &amp; Tech</span></button>
+      <button class="dash-tab" data-dash-tab="projects" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24"><use href="#i-award"/></svg><span>Projects &amp; Certs</span></button>
+    </div>
+
+    <!-- Top Right Actions -->
+    <div class="dash-actions">
+      <a href="https://1drv.ms/w/c/cfd9a88d4bc2a72f/IQB6CmicZcqRToPzLjpv2RcGAXVQxzTYkP0Twmp7Nsn37-M?e=9E5N34" target="_blank" rel="noopener" class="dash-btn dash-resume-btn" title="Open Interview Resume on OneDrive">
+        <svg class="i" viewBox="0 0 24 24"><use href="#i-doc"/></svg><span>Resume</span>
+      </a>
+      <button class="dash-icon-btn" id="dashThemeBtn" aria-label="Toggle light and dark theme">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+      </button>
+      <button class="dash-icon-btn dash-close-btn" id="dashCloseBtn" aria-label="Close dashboard (ESC)">
+        <span>&times;</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Non-scrolling Viewport -->
+  <div class="dash-viewport">
+    <div class="dash-grid" id="dashGrid" data-active-pane="all">
+
+      <!-- COLUMN 1: Profile & Persona Holographic Card -->
+      <section class="dash-card dash-profile-card spot c-pink" data-pane="profile">
+        <div class="dash-avatar-wrapper">
+          <div class="dash-avatar-ring">
+            <div class="dash-avatar-inner">
+              <img id="dashAvatarImg" alt="Priyanshi Mandloi portrait" src="">
+            </div>
+          </div>
+          <div class="dash-badge-orbit o-left"><span class="orbit-pill">AIML '28</span></div>
+          <div class="dash-badge-orbit o-right"><span class="orbit-pill">Team Lead</span></div>
+        </div>
+
+        <div class="dash-profile-meta">
+          <h3 class="dash-name">Priyanshi <span class="serif grad-text">Mandloi</span></h3>
+          <div class="dash-role-tag">B.Tech AIML • Bansal Institute (BIST)</div>
+          <p class="dash-bio">Passionate AI/ML engineer, confident team leader, and public speaker building next-gen web &amp; intelligence tools in Bhopal, MP.</p>
+        </div>
+
+        <!-- 4 Pictorial KPI Tiles with animated counters -->
+        <div class="dash-kpi-grid">
+          <div class="dash-kpi-tile c-pink">
+            <div class="kpi-num"><span class="dash-count" data-val="7.7" data-dec="1">0</span></div>
+            <div class="kpi-label">Cumulative CGPA</div>
+          </div>
+          <div class="dash-kpi-tile c-amber">
+            <div class="kpi-num"><span class="dash-count" data-val="2">0</span><span class="plus">+</span></div>
+            <div class="kpi-label">Projects Led</div>
+          </div>
+          <div class="dash-kpi-tile c-mint">
+            <div class="kpi-num"><span class="dash-count" data-val="8">0</span></div>
+            <div class="kpi-label">Certifications</div>
+          </div>
+          <div class="dash-kpi-tile c-peri">
+            <div class="kpi-num"><span class="dash-count" data-val="1">0</span></div>
+            <div class="kpi-label">Web Internship</div>
+          </div>
+        </div>
+
+        <!-- Persona Traits -->
+        <div class="dash-traits">
+          <span class="trait-chip">🎙 Public Speaking</span>
+          <span class="trait-chip">👥 Team Leadership</span>
+          <span class="trait-chip">💡 Self-Motivated</span>
+          <span class="trait-chip">⚡ Rapid Builder</span>
+        </div>
+
+        <!-- Direct Social & Resume Bar -->
+        <div class="dash-contact-row">
+          <a href="https://github.com/priyanshimandloi06" target="_blank" rel="noopener" class="dash-icon-link" title="GitHub Profile"><svg viewBox="0 0 24 24"><use href="#i-github"/></svg></a>
+          <a href="https://www.linkedin.com/in/priyanshi-mandloi-539a2532b" target="_blank" rel="noopener" class="dash-icon-link" title="LinkedIn Profile"><svg viewBox="0 0 24 24"><use href="#i-linkedin"/></svg></a>
+          <a href="mailto:priyanshimandloi06@gmail.com" class="dash-icon-link" title="Send Email"><svg viewBox="0 0 24 24"><use href="#i-mail"/></svg></a>
+          <a href="tel:+917024536627" class="dash-icon-link" title="Call"><svg viewBox="0 0 24 24"><use href="#i-phone"/></svg></a>
+          <a href="https://1drv.ms/w/c/cfd9a88d4bc2a72f/IQB6CmicZcqRToPzLjpv2RcGAXVQxzTYkP0Twmp7Nsn37-M?e=9E5N34" target="_blank" rel="noopener" class="dash-resume-cta"><span>Full Resume</span> <svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></a>
+        </div>
+      </section>
+
+      <!-- COLUMN 2: Academics + Tech Radar -->
+      <div class="dash-col-stack" data-pane="academics">
+        <!-- Academic Gauge & Trajectory Card -->
+        <section class="dash-card spot c-amber dash-pane-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">
+              <span class="dash-card-icon c-amber"><svg viewBox="0 0 24 24"><use href="#i-school"/></svg></span>
+              <h4>Academic Excellence &amp; Trajectory</h4>
+            </div>
+            <span class="dash-chip-sm">Consistent &gt; 80%</span>
+          </div>
+
+          <div class="dash-academic-visual">
+            <!-- Circular Radial Meter for B.Tech -->
+            <div class="dash-radial-box">
+              <svg class="dash-radial-svg" viewBox="0 0 100 100">
+                <circle class="dash-radial-track" cx="50" cy="50" r="40" />
+                <circle class="dash-radial-bar" id="cgpaRing" cx="50" cy="50" r="40" stroke-dasharray="251.32" stroke-dashoffset="251.32" />
+              </svg>
+              <div class="dash-radial-content">
+                <div class="dash-radial-score"><span class="dash-count" data-val="7.7" data-dec="1">0</span></div>
+                <div class="dash-radial-unit">CGPA</div>
+                <div class="dash-radial-sub">B.Tech AIML</div>
+              </div>
+            </div>
+
+            <!-- Schooling Performance Bars -->
+            <div class="dash-edu-bars">
+              <div class="dash-edu-item">
+                <div class="dash-edu-info">
+                  <span class="dash-edu-level">Class XII (PCM)</span>
+                  <span class="dash-edu-school">D.A.V. Public H.S. School</span>
+                </div>
+                <div class="dash-edu-bar-track">
+                  <div class="dash-edu-bar-fill c-amber" style="--w: 80.6%;">
+                    <span class="bar-tag">80.6%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="dash-edu-item">
+                <div class="dash-edu-info">
+                  <span class="dash-edu-level">Class X</span>
+                  <span class="dash-edu-school">D.A.V. Public H.S. School</span>
+                </div>
+                <div class="dash-edu-bar-track">
+                  <div class="dash-edu-bar-fill c-mint" style="--w: 85%;">
+                    <span class="bar-tag">85.0%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academic Timeline Graph (Pictorial SVG curve) -->
+          <div class="dash-sparkline-wrap">
+            <div class="spark-label">Academic Milestone Progress Graph (2021 – 2028):</div>
+            <svg class="dash-sparkline-svg" viewBox="0 0 280 40" preserveAspectRatio="none">
+              <path class="spark-area" d="M 20 12 L 140 18 L 260 8 L 260 40 L 20 40 Z" fill="url(#sparkGrad)" opacity="0.14" />
+              <path class="spark-line" d="M 20 12 L 140 18 L 260 8" fill="none" stroke="url(#sparkGrad)" stroke-width="2.5" stroke-linecap="round" />
+              <circle cx="20" cy="12" r="4" fill="var(--mint)" />
+              <circle cx="140" cy="18" r="4" fill="var(--amber)" />
+              <circle cx="260" cy="8" r="4" fill="var(--pink)" />
+            </svg>
+            <div class="spark-nodes">
+              <span>Class X: 85%</span>
+              <span>Class XII: 80.6%</span>
+              <span>B.Tech: 7.7 CGPA</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Technical Mastery & Radar Card -->
+        <section class="dash-card spot c-mint dash-pane-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">
+              <span class="dash-card-icon c-mint"><svg viewBox="0 0 24 24"><use href="#i-code"/></svg></span>
+              <h4>Technical Mastery &amp; Capabilities</h4>
+            </div>
+            <span class="dash-chip-sm">Multi-Stack</span>
+          </div>
+
+          <div class="dash-skills-grid">
+            <div class="skill-meter-row">
+              <div class="sm-meta"><span>Python &amp; ML (OOP, NumPy, Pandas)</span><span class="sm-pct">92%</span></div>
+              <div class="sm-track"><div class="sm-fill c-pink" style="--p: 92%;"></div></div>
+            </div>
+            <div class="skill-meter-row">
+              <div class="sm-meta"><span>Web Dev (Flask, React, HTML5, CSS3)</span><span class="sm-pct">88%</span></div>
+              <div class="sm-track"><div class="sm-fill c-amber" style="--p: 88%;"></div></div>
+            </div>
+            <div class="skill-meter-row">
+              <div class="sm-meta"><span>Data &amp; SQL (SQLite, Power BI)</span><span class="sm-pct">82%</span></div>
+              <div class="sm-track"><div class="sm-fill c-mint" style="--p: 82%;"></div></div>
+            </div>
+            <div class="skill-meter-row">
+              <div class="sm-meta"><span>Dev Tools &amp; Cloud (Git, Vercel, Render)</span><span class="sm-pct">86%</span></div>
+              <div class="sm-track"><div class="sm-fill c-peri" style="--p: 86%;"></div></div>
+            </div>
+            <div class="skill-meter-row">
+              <div class="sm-meta"><span>Leadership &amp; Public Speaking</span><span class="sm-pct">95%</span></div>
+              <div class="sm-track"><div class="sm-fill c-pink" style="--p: 95%;"></div></div>
+            </div>
+          </div>
+
+          <div class="dash-tool-pills">
+            <span class="t-pill">Git &amp; GitHub</span>
+            <span class="t-pill">VS Code</span>
+            <span class="t-pill">Render</span>
+            <span class="t-pill">Netlify</span>
+            <span class="t-pill">Claude</span>
+            <span class="t-pill">ChatGPT</span>
+            <span class="t-pill">Canva AI</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- COLUMN 3: Projects + Credentials -->
+      <div class="dash-col-stack" data-pane="projects">
+        <!-- Projects Command Card -->
+        <section class="dash-card spot c-peri dash-pane-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">
+              <span class="dash-card-icon c-peri"><svg viewBox="0 0 24 24"><use href="#i-tools"/></svg></span>
+              <h4>Production Projects Led</h4>
+            </div>
+            <span class="dash-chip-sm">2 Live Deployments</span>
+          </div>
+
+          <div class="dash-projects-display">
+            <!-- Project 1: KrishiConnect -->
+            <div class="dash-proj-node">
+              <div class="dpn-art art-a">
+                <svg viewBox="0 0 24 24"><use href="#i-sprout"/></svg>
+              </div>
+              <div class="dpn-details">
+                <div class="dpn-head">
+                  <span class="dpn-badge c-pink">Lead Developer</span>
+                  <span class="dpn-status live">● Render Live</span>
+                </div>
+                <h5>KrishiConnect</h5>
+                <p>Direct farmer-to-consumer marketplace cutting out middlemen with PM Kisan auth.</p>
+                <div class="dpn-tags">
+                  <span>Python</span><span>Flask</span><span>SQLite</span><span>React</span>
+                </div>
+              </div>
+              <a href="https://krishiconnect-frontend-4awt.onrender.com/" target="_blank" rel="noopener" class="dpn-launch" title="Launch KrishiConnect Live Site">
+                <svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+              </a>
+            </div>
+
+            <!-- Project 2: CEMS -->
+            <div class="dash-proj-node">
+              <div class="dpn-art art-b">
+                <svg viewBox="0 0 24 24"><use href="#i-cal"/></svg>
+              </div>
+              <div class="dpn-details">
+                <div class="dpn-head">
+                  <span class="dpn-badge c-peri">Lead Developer</span>
+                  <span class="dpn-status live">● Netlify Live</span>
+                </div>
+                <h5>College Event Management</h5>
+                <p>One-stop event discovery, payment &amp; registration with mobile duplication-lock.</p>
+                <div class="dpn-tags">
+                  <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                </div>
+              </div>
+              <a href="https://6ab8bcaac11a339db4096dff--college-event-management-frontend.netlify.app/" target="_blank" rel="noopener" class="dpn-launch" title="Launch College Event Management Live Site">
+                <svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Credentials & Internship Card -->
+        <section class="dash-card spot c-pink dash-pane-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">
+              <span class="dash-card-icon c-pink"><svg viewBox="0 0 24 24"><use href="#i-award"/></svg></span>
+              <h4>Internship &amp; 8 Verified Certifications</h4>
+            </div>
+            <!-- Internship Pill -->
+            <span class="dash-intern-pill">💼 ApexPlanet Software Intern</span>
+          </div>
+
+          <!-- Certifications 4x2 Grid -->
+          <div class="dash-cert-grid">
+            <a href="https://www.linkedin.com/posts/priyanshi-mandloi-539a2532b_python-cisconetworkingacademy-openedg-activity-7391482250179137536-Nyu_" target="_blank" rel="noopener" class="dash-cert-chip c-pink" title="Verify Cisco Python Certificate">
+              <span class="dcc-iss">Cisco</span>
+              <span class="dcc-title">Python Essentials 1</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/posts/priyanshi-mandloi-539a2532b_infosysspringboard-python-programming-activity-7485913561266008064--7dV" target="_blank" rel="noopener" class="dash-cert-chip c-amber" title="Verify Infosys C++ Certificate">
+              <span class="dcc-iss">Infosys</span>
+              <span class="dcc-title">C++ Programming</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/posts/priyanshi-mandloi-539a2532b_be10x-certificate-activity-7421172080345350145-40em" target="_blank" rel="noopener" class="dash-cert-chip c-mint" title="Verify Be10x AI Certificate">
+              <span class="dcc-iss">Be10x</span>
+              <span class="dcc-title">AI Tools Learning</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/posts/priyanshi-mandloi-539a2532b_thrilled-to-share-my-certification-of-generative-activity-7329900433890549760-4Lzq" target="_blank" rel="noopener" class="dash-cert-chip c-peri" title="Verify Simplilearn GenAI Certificate">
+              <span class="dcc-iss">Simplilearn</span>
+              <span class="dcc-title">Generative AI</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/posts/priyanshi-mandloi-539a2532b_successfully-completed-a-22-hour-course-on-activity-7332412231436980224-nszF" target="_blank" rel="noopener" class="dash-cert-chip c-peri" title="Verify Saylors Presentation Certificate">
+              <span class="dcc-iss">Saylors</span>
+              <span class="dcc-title">Presentation Skills</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/posts/priyanshi-mandloi-539a2532b_my-communication-skills-certification-in-activity-7272587458519699456-ec7j" target="_blank" rel="noopener" class="dash-cert-chip c-mint" title="Verify Saylors Interviewing Certificate">
+              <span class="dcc-iss">Saylors</span>
+              <span class="dcc-title">Interviewing Skills</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/posts/priyanshi-mandloi-539a2532b_english-group-communication-certification-activity-7271932389851906049-2eVz" target="_blank" rel="noopener" class="dash-cert-chip c-amber" title="Verify Saylors Group Comm Certificate">
+              <span class="dcc-iss">Saylors</span>
+              <span class="dcc-title">Group Comm</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+            <a href="https://www.hackerrank.com/certificates/iframe/d3bad13437eb" target="_blank" rel="noopener" class="dash-cert-chip c-pink" title="Verify HackerRank CSS Certificate">
+              <span class="dcc-iss">HackerRank</span>
+              <span class="dcc-title">CSS Certified</span>
+              <svg class="dcc-arrow" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+            </a>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -847,6 +1512,107 @@
       var first = f[0], last = f[1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  /* ---------- DASHBOARD CONTROLS & ANIMATIONS ---------- */
+  var dash = $('#dashOverlay');
+  var dashAvatar = $('#dashAvatarImg');
+  var cgpaRing = $('#cgpaRing');
+  var dashCounts = $$('.dash-count');
+  var dashTabs = $$('.dash-tab');
+  var dashGrid = $('#dashGrid');
+
+  function openDashboard() {
+    if (!dash) return;
+    // Sync avatar photo from hero image
+    var heroImg = $('.photo-inner img');
+    if (heroImg && dashAvatar && !dashAvatar.getAttribute('src')) {
+      dashAvatar.src = heroImg.src;
+    }
+
+    dash.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Animate CGPA radial ring: 7.7/10 = 77% -> 251.32 * (1 - 0.77) = 57.8px
+    if (cgpaRing) {
+      cgpaRing.style.strokeDashoffset = '251.32';
+      setTimeout(function () {
+        cgpaRing.style.strokeDashoffset = '57.8';
+      }, 80);
+    }
+
+    // Animate dash numbers
+    dashCounts.forEach(function (el) {
+      var val = parseFloat(el.getAttribute('data-val')), dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      el.textContent = '0';
+      var start = performance.now(), dur = 1000;
+      (function step(now) {
+        var p = Math.min((now - start) / dur, 1), eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = (val * eased).toFixed(dec);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = val.toFixed(dec);
+      })(start);
+    });
+
+    if (history.pushState && location.hash !== '#dashboard') {
+      history.pushState(null, null, '#dashboard');
+    }
+  }
+
+  function closeDashboard() {
+    if (!dash || !dash.classList.contains('open')) return;
+    dash.classList.remove('open');
+    document.body.style.overflow = '';
+    if (location.hash === '#dashboard') {
+      if (history.replaceState) {
+        history.replaceState(null, null, ' ');
+      } else {
+        location.hash = '';
+      }
+    }
+  }
+
+  // Dashboard open triggers
+  var openDashBtn = $('#openDashBtn');
+  if (openDashBtn) openDashBtn.addEventListener('click', openDashboard);
+  var dashCloseBtn = $('#dashCloseBtn');
+  if (dashCloseBtn) dashCloseBtn.addEventListener('click', closeDashboard);
+
+  // Sync theme toggle inside dashboard
+  var dashThemeBtn = $('#dashThemeBtn');
+  if (dashThemeBtn) {
+    dashThemeBtn.addEventListener('click', function () {
+      var n = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', n);
+      try { localStorage.setItem('pm-theme', n); } catch (e) {}
+    });
+  }
+
+  // Dashboard tab switching
+  dashTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      dashTabs.forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      var targetPane = tab.getAttribute('data-dash-tab');
+      if (dashGrid) dashGrid.setAttribute('data-active-pane', targetPane);
+    });
+  });
+
+  // URL hash listener for #dashboard
+  if (location.hash === '#dashboard') {
+    setTimeout(openDashboard, 200);
+  }
+  window.addEventListener('hashchange', function () {
+    if (location.hash === '#dashboard') openDashboard();
+    else if (dash && dash.classList.contains('open')) closeDashboard();
+  });
+
+  // ESC key listener for dashboard
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && dash && dash.classList.contains('open')) {
+      closeDashboard();
     }
   });
 })();
