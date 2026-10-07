@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { resumeUrl, connectLinks } from "@/lib/data";
+import { resumeUrl } from "@/lib/data";
 
 const SECTIONS = ["about", "skills", "projects", "education", "certs", "coding", "connect"];
 
@@ -47,28 +47,6 @@ export default function Nav() {
         <li><a href="#certs" className={active === "certs" ? "active" : ""}>Certificates</a></li>
         <li><a href="#coding" className={active === "coding" ? "active" : ""}>Coding</a></li>
         <li><a href="#connect" className={active === "connect" ? "active" : ""}>Connect</a></li>
-        <li>
-          <a
-            href={connectLinks.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-linkedin-btn"
-            title="View LinkedIn Profile"
-          >
-            LinkedIn{" "}
-            <svg
-              className="nav-ext-ico"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 17L17 7M17 7H7M17 7V17" />
-            </svg>
-          </a>
-        </li>
         <li>
           <a
             href={resumeUrl}
